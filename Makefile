@@ -1,4 +1,4 @@
-#DOCSET_NAME = ...
+DOCSET_NAME = Flex
 
 DOCSET_DIR    = $(DOCSET_NAME).docset
 CONTENTS_DIR  = $(DOCSET_DIR)/Contents
@@ -12,8 +12,10 @@ ARCHIVE_FILE    = $(DOCSET_NAME).tgz
 
 #SRC_ICON = src/icon.png
 
-#MANUAL_URL  = ...
-#MANUAL_FILE = tmp/...
+VERSION = 2.6.4
+MANUAL_URL  = https://github.com/westes/flex/releases/download/v$(VERSION)/flex-$(VERSION).tar.gz
+MANUAL_SRC = tmp/flex-$(VERSION)
+MANUAL_FILE = $(MANUAL_SRC)/doc/flex.html
 
 ERROR_DOCSET_NAME = $(error DOCSET_NAME is unset)
 WARNING_MANUAL_URL = $(warning MANUAL_URL is unset)
@@ -45,6 +47,9 @@ archive: $(ARCHIVE_FILE)
 
 clean:
 	rm -rf $(DOCSET_DIR) $(ARCHIVE_FILE)
+ifneq (,$(wildcard $(MANUAL_SRC)))
+	cd $(MANUAL_SRC) && make clean
+endif
 
 tmp:
 	mkdir -p $@
@@ -52,8 +57,12 @@ tmp:
 $(ARCHIVE_FILE): $(DOCSET)
 	tar --exclude='.DS_Store' -czf $@ $(DOCSET_DIR)
 
-$(MANUAL_FILE): tmp
-	curl -o $@ $(MANUAL_URL)
+$(MANUAL_SRC): tmp
+	curl -L -o $@.tar.gz $(MANUAL_URL)
+	tar -x -z -f $@.tar.gz -C tmp
+
+$(MANUAL_FILE): $(MANUAL_SRC)
+	cd $(MANUAL_SRC) && ./configure && make html
 
 $(DOCSET_DIR):
 	mkdir -p $@
@@ -66,7 +75,7 @@ $(RESOURCES_DIR): $(CONTENTS_DIR)
 
 $(DOCUMENTS_DIR): $(RESOURCES_DIR) $(MANUAL_FILE)
 	mkdir -p $@
-	tar -x -z -f $(MANUAL_FILE) -C $@
+	cp -r $(MANUAL_FILE)/* $@
 
 $(INFO_PLIST_FILE): src/Info.plist $(CONTENTS_DIR)
 	cp src/Info.plist $@

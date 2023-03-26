@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string><!-- VALUE --></string>
+	<string>flex</string>
 	<key>CFBundleName</key>
-	<string><!-- VALUE --></string>
+	<string>Flex</string>
 	<key>DocSetPlatformFamily</key>
-	<string><!-- VALUE --></string>
+	<string>flex</string>
 	<key>isDashDocset</key>
 	<true/>
 </dict>

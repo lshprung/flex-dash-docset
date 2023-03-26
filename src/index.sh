@@ -13,8 +13,21 @@ get_title() {
 	FILE="$1"
 
 	pup -p -f "$FILE" 'title text{}' | \
+		sed 's/(Lexical Analysis With Flex.*)//' | \
 		tr -d \\n | \
 		sed 's/\"/\"\"/g'
+}
+
+get_type() {
+	PAGE_NAME="$1"
+
+	case "$PAGE_NAME" in
+		option-*)
+			echo "Option"
+			;;
+		*)
+			echo "Guide"
+	esac
 }
 
 insert() {
@@ -31,7 +44,21 @@ insert_pages() {
 		unset PAGE_NAME
 		unset PAGE_TYPE
 		PAGE_NAME="$(get_title "$1")"
-		PAGE_TYPE="Guide"
+
+		# determine type
+		case "$PAGE_NAME" in
+			option-*)
+				PAGE_TYPE="Option"
+				PAGE_NAME="$(echo "$PAGE_NAME" | sed 's/^option-//')"
+				;;
+			unnamed-* | deleteme* | ERASEME*)
+				shift
+				continue
+				;;
+			*)
+				PAGE_TYPE="Guide"
+		esac
+
 		if [ -n "$PAGE_NAME" ]; then
 			insert "$PAGE_NAME" "$PAGE_TYPE" "$(basename "$1")"
 		fi

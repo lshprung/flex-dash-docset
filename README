@@ -1,0 +1,18 @@
+Here is a script and a Makefile for generating a Flex docset for Dash. The script is based on the dash-docset-generation-template
+
+- Flex: https://github.com/westes/flex
+- Dash: https://kapeli.com/dash
+- dash-docset-generation-template: https://github.com/lshprung/dash-docset-generation-template
+
+To generate a docset from the latest edition of the Flex Manual, simply
+execute `make` from the same directory as this README file. The latest edition
+will be downloaded from https://github.com/westes/flex and packaged appropriately.
+A specific version can be specified in the Makefile.
+
+Requirements:
+
+- any POSIX-compliant shell
+- curl
+- make
+- pup
+- sqlite3
