@@ -80,9 +80,15 @@ $(DOCUMENTS_DIR): $(RESOURCES_DIR) $(MANUAL_FILE)
 $(INFO_PLIST_FILE): src/Info.plist $(CONTENTS_DIR)
 	cp src/Info.plist $@
 
-$(INDEX_FILE): src/index.sh $(DOCUMENTS_DIR)
+$(INDEX_FILE): src/index-page.sh src/index-terms.sh $(DOCUMENTS_DIR)
 	rm -f $@
-	src/index.sh $@ $(DOCUMENTS_DIR)/*.html
+	src/index-page.sh $@ $(DOCUMENTS_DIR)/*.html
+	src/index-terms.sh "Entry" $@ $(DOCUMENTS_DIR)/Concept-Index.html
+	src/index-terms.sh "Function" $@ $(DOCUMENTS_DIR)/Index-of-Functions-and-Macros.html
+	src/index-terms.sh "Variable" $@ $(DOCUMENTS_DIR)/Index-of-Variables.html
+	src/index-terms.sh "Type" $@ $(DOCUMENTS_DIR)/Index-of-Data-Types.html
+	src/index-terms.sh "Hook" $@ $(DOCUMENTS_DIR)/Index-of-Hooks.html
+	src/index-terms.sh "Option" $@ $(DOCUMENTS_DIR)/Index-of-Scanner-Options.html # TODO remove duplicates
 
 $(ICON_FILE): src/icon.png $(DOCSET_DIR)
 	cp $(SRC_ICON) $@
