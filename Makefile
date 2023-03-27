@@ -88,7 +88,8 @@ $(INDEX_FILE): src/index-page.sh src/index-terms.sh $(DOCUMENTS_DIR)
 	src/index-terms.sh "Variable" $@ $(DOCUMENTS_DIR)/Index-of-Variables.html
 	src/index-terms.sh "Type" $@ $(DOCUMENTS_DIR)/Index-of-Data-Types.html
 	src/index-terms.sh "Hook" $@ $(DOCUMENTS_DIR)/Index-of-Hooks.html
-	src/index-terms.sh "Option" $@ $(DOCUMENTS_DIR)/Index-of-Scanner-Options.html # TODO remove duplicates
+	src/index-terms.sh "Option" $@ $(DOCUMENTS_DIR)/Index-of-Scanner-Options.html
+	sqlite3 "$@" "DELETE FROM searchIndex WHERE EXISTS (SELECT 1 FROM searchIndex s2 WHERE searchIndex.name = s2.name AND searchIndex.type = s2.type AND searchIndex.type = \"Option\" AND searchIndex.rowid > s2.rowid)" # Remove duplicates
 
 $(ICON_FILE): src/icon.png $(DOCSET_DIR)
 	cp $(SRC_ICON) $@

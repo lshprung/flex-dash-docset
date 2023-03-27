@@ -12,7 +12,7 @@ get_title() {
 	FILE="$1"
 
 	pup -p -f "$FILE" 'title text{}' | \
-		sed 's/(Lexical Analysis With Flex.*)//' | \
+		sed 's/ (Lexical Analysis With Flex.*)//' | \
 		tr -d \\n | \
 		sed 's/\"/\"\"/g'
 }
