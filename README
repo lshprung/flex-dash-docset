@@ -16,3 +16,4 @@ Requirements:
 - make
 - pup
 - sqlite3
+- texinfo
