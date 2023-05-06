@@ -14,5 +14,6 @@ Requirements:
 - any POSIX-compliant shell
 - curl
 - make
+- makeinfo
 - pup
 - sqlite3
