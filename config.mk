@@ -14,9 +14,9 @@ $(DOCUMENTS_DIR): $(RESOURCES_DIR) $(MANUAL_FILE)
 	mkdir -p $@
 	cp -r $(MANUAL_FILE)/* $@
 
-$(INDEX_FILE): $(SOURCE_DIR)/src/index-page.sh $(SCRIPTS_DIR)/gnu/index-terms.sh $(DOCUMENTS_DIR)
+$(INDEX_FILE): $(SOURCE_DIR)/src/index-pages.sh $(SCRIPTS_DIR)/gnu/index-terms.sh $(DOCUMENTS_DIR)
 	rm -f $@
-	$(SOURCE_DIR)/src/index-page.sh $@ $(DOCUMENTS_DIR)/*.html
+	$(SOURCE_DIR)/src/index-pages.sh $@ $(DOCUMENTS_DIR)/*.html
 	$(SCRIPTS_DIR)/gnu/index-terms.sh "Entry" $@ $(DOCUMENTS_DIR)/Concept-Index.html
 	$(SCRIPTS_DIR)/gnu/index-terms.sh "Function" $@ $(DOCUMENTS_DIR)/Index-of-Functions-and-Macros.html
 	$(SCRIPTS_DIR)/gnu/index-terms.sh "Variable" $@ $(DOCUMENTS_DIR)/Index-of-Variables.html

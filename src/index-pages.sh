@@ -2,20 +2,13 @@
 
 # shellcheck source=../../../scripts/create_table.sh
 . "$(dirname "$0")"/../../../scripts/create_table.sh
+# shellcheck source=../../../scripts/get_title.sh
+. "$(dirname "$0")"/../../../scripts/get_title.sh
 # shellcheck source=../../../scripts/insert.sh
 . "$(dirname "$0")"/../../../scripts/insert.sh
 
 DB_PATH="$1"
 shift
-
-get_title() {
-	FILE="$1"
-
-	pup -p -f "$FILE" 'title text{}' | \
-		sed 's/ (Lexical Analysis With Flex.*)//' | \
-		tr -d \\n | \
-		sed 's/\"/\"\"/g'
-}
 
 get_type() {
 	PAGE_NAME="$1"
@@ -34,7 +27,7 @@ insert_pages() {
 	while [ -n "$1" ]; do
 		unset PAGE_NAME
 		unset PAGE_TYPE
-		PAGE_NAME="$(get_title "$1")"
+		PAGE_NAME="$(get_title "$1" | sed 's/ (Lexical Analysis With Flex.*)//')"
 
 		# determine type
 		case "$PAGE_NAME" in
